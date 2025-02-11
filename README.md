@@ -1,6 +1,5 @@
 # Making  authentication page using Spring Boot (Without Spring Security)
 - Currently just implementing register process , will do Login and logout then session.
-- 
 
 # **User Registration & Login Without Spring Security (Fundamental Explanation)**
 
@@ -14,55 +13,76 @@
 - Set up the PostgreSQL database connection in the `application.properties` file.
 - Example configuration:
   ```properties
-  spring.datasource.url=jdbc:postgresql://localhost:5432/your_db
-  spring.datasource.username=your_username
-  spring.datasource.password=your_password
+  spring.application.name=Register_Login
+  
+  server.port=8080
+  
+  #DB Connection
+  spring.datasource.username=userName
+  spring.datasource.password=password
+  
+  spring.datasource.url=jdbc:postgresql://localhost:5432/auth01
+  
+  #Auto -update or create db schema
+  #Automatically create or update tables based on entity mapping
+  # Ensure the schema is updated based on JPA entities
   spring.jpa.hibernate.ddl-auto=update
-  spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+  spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+  
+  # show SQL queries in logs
+  
+  spring.jpa.show-sql=true
+  spring.jpa.properties.hibernet.format_sql=true
+  
+  logging.level.org.hibernate=DEBUG
+  logging.level.org.springframework.orm.jpa=DEBUG
   ```
 
 ### 3. **Create a `User` Entity**
 - Define the `User` entity class to map user data to the database.
-- Example structure:
-  ```java
-  @Entity
-  public class User {
-      @Id
-      @GeneratedValue(strategy = GenerationType.IDENTITY)
-      private Long id;
-      private String name;
-      private String email;
-      private String password;
-      // getters and setters
-  }
-  ```
+  - Example structure:
+    ```java
+
+    @Entity
+    @Table(name="authUser")
+    public class userModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String username;
+    private String password;
+    private String email;
+    private String name;
+    private String lastName;
+      // getter setters ..
+    }
+    ```
 
 ### 4. **Create a `UserRepository` Interface**
 - Create a repository interface extending `JpaRepository` to interact with the database.
 - Example:
   ```java
-  public interface UserRepository extends JpaRepository<User, Long> {
-      Optional<User> findByEmail(String email);
-  }
-  ```
-
-### 5. **Create a `UserService` Class**
-- Create a service class that contains the business logic for user registration. (also for login .. later)
-- Example:
-  ```java
-  @Service
-  public class UserService {
-      @Autowired
-      private UserRepository userRepository;
-
-      public User registerUser(User user) {
-          return userRepository.save(user);
-      }
+  public interface userRepo extends JpaRepository<userModel, int> {
       
   }
   ```
 
-Commented this part below, will uncomment these after Completing those steps and update as my experience while implementing those.
+### 5. **Create a `UserService` Class**
+- Create a service class that contains the business logic for user registration. (also for login, later)
+- Example:
+  ```java
+  @Service
+  public class userService {
+  @Autowired
+  private userRepo repo;
+
+    public userModel registerUser(userModel user){
+        return repo.save(user);
+        }
+    }
+  ```
+
+- Commented this part below, will uncomment these after Completing those steps and update as my experience while implementing those.
 
 [//]: # ()
 [//]: # (### 6. **Create a `UserController` Class**)
@@ -146,3 +166,5 @@ Commented this part below, will uncomment these after Completing those steps and
 [//]: # (    - `POST /api/users/register` to register a new user.)
 
 [//]: # (    - `POST /api/users/login` to login with an existing user.)
+
+

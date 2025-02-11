@@ -8,10 +8,12 @@ public class userModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String username;
+    @Column(name = "userName")
+    private String userName;
     private String password;
     private String email;
     private String name;
+    @Column(name = "lastName")
     private String lastName;
 
     public int getId() {
@@ -22,12 +24,12 @@ public class userModel {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getuserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setuserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -64,6 +66,6 @@ public class userModel {
 
     @Override
     public String toString() {
-        return "userModel{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\'' + ", email='" + email + '\'' + ", name='" + name + '\'' + ", lastName='" + lastName + '\'' + '}';
+        return "userModel{" + "id=" + id + ", userName='" + userName + '\'' + ", password='" + password + '\'' + ", email='" + email + '\'' + ", name='" + name + '\'' + ", lastName='" + lastName + '\'' + '}';
     }
 }

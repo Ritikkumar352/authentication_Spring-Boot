@@ -1,32 +1,47 @@
 package com.register.register_login.Controller;
 
-import org.springframework.stereotype.Controller;
+import com.register.register_login.model.userModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import com.register.register_login.service.userService;
 
-@Controller
+@RestController
 public class userController {
+    @Autowired
+    private userService userService;
+
     @GetMapping("/")
-    @ResponseBody
+
     public String home() {
         return "home";
     }
 
-    @PostMapping("/login")
-    @ResponseBody   // use to return plain string
-    public String login(){
-        return "login here";
-    }
     @PostMapping("/register")
-    public void register(){
+    public ResponseEntity<String> register(@RequestBody userModel user) {
+        try {
+            userService.registerUser(user);
+            return ResponseEntity.ok("{" +
+                    "\"message\":" +
+                    " \"User Registered Successfully\"" +
+                    "}"
+            );
 
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Registration Failed");
+        }
     }
 
     @GetMapping("/about")
-    @ResponseBody
-    public String about(){
+    public String about() {
         return "about";
     }
 
+    @GetMapping("/contact")
+    public String contact() {
+        return "contact";
+    }
 }
