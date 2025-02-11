@@ -32,7 +32,7 @@
   # show SQL queries in logs
   
   spring.jpa.show-sql=true
-  spring.jpa.properties.hibernet.format_sql=true
+  spring.jpa.properties.hibernate.format_sql=true
   
   logging.level.org.hibernate=DEBUG
   logging.level.org.springframework.orm.jpa=DEBUG
@@ -84,60 +84,41 @@
 
 - Commented this part below, will uncomment these after Completing those steps and update as my experience while implementing those.
 
-[//]: # ()
-[//]: # (### 6. **Create a `UserController` Class**)
 
-[//]: # (- Create a REST controller to expose HTTP endpoints for user registration and login.)
+### 6. **Create a `UserController` Class**
 
-[//]: # (- Example:)
+- Create a REST controller to expose HTTP endpoints for user registration and login.
 
-[//]: # (  ```java)
+- Example:
 
-[//]: # (  @RestController)
+  ```java
 
-[//]: # (  @RequestMapping&#40;"/api/users"&#41;)
+  @RestController
+  public class userController {
 
-[//]: # (  public class UserController {)
+      @Autowired
+      private userService userService;
+      
+      @PostMapping("/register")
+       // find proper way to return JSON instead of String
+      public ResponseEntity<String> registerUser(@RequestBody User user) {
+              try {
+            userService.registerUser(user);
+            return ResponseEntity.ok("{" +
+                    "\"message\":" +
+                    " \"User Registered Successfully\"" +
+                    "}"
+            );
 
-[//]: # (      @Autowired)
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Registration Failed");
+        }
+      }
+  }
 
-[//]: # (      private UserService userService;)
+  ```
 
-[//]: # ()
-[//]: # (      @PostMapping&#40;"/register"&#41;)
 
-[//]: # (      public ResponseEntity<User> registerUser&#40;@RequestBody User user&#41; {)
-
-[//]: # (          User savedUser = userService.registerUser&#40;user&#41;;)
-
-[//]: # (          return ResponseEntity.status&#40;HttpStatus.CREATED&#41;.body&#40;savedUser&#41;;)
-
-[//]: # (      })
-
-[//]: # ()
-[//]: # (      @PostMapping&#40;"/login"&#41;)
-
-[//]: # (      public ResponseEntity<String> loginUser&#40;@RequestBody User user&#41; {)
-
-[//]: # (          Optional<User> existingUser = userService.findUserByEmail&#40;user.getEmail&#40;&#41;&#41;;)
-
-[//]: # (          if &#40;existingUser.isPresent&#40;&#41; && existingUser.get&#40;&#41;.getPassword&#40;&#41;.equals&#40;user.getPassword&#40;&#41;&#41;&#41; {)
-
-[//]: # (              return ResponseEntity.ok&#40;"Login successful"&#41;;)
-
-[//]: # (          } else {)
-
-[//]: # (              return ResponseEntity.status&#40;HttpStatus.UNAUTHORIZED&#41;.body&#40;"Invalid credentials"&#41;;)
-
-[//]: # (          })
-
-[//]: # (      })
-
-[//]: # (  })
-
-[//]: # (  ```)
-
-[//]: # ()
 [//]: # (### 7. **Use `@RequestBody` for Data Input**)
 
 [//]: # (- Use the `@RequestBody` annotation to accept user input in JSON format and bind it to the `User` entity.)
