@@ -14,8 +14,9 @@ public class userController {
     }
 
     @PostMapping("/login")
-    public void login(){
-
+    @ResponseBody   // use to return plain string
+    public String login(){
+        return "login here";
     }
     @PostMapping("/register")
     public void register(){
