@@ -47,7 +47,7 @@
   ```
 
 ### 5. **Create a `UserService` Class**
-- Create a service class that contains the business logic for user registration and login.
+- Create a service class that contains the business logic for user registration. (also for login .. later)
 - Example:
   ```java
   @Service
@@ -61,6 +61,8 @@
       
   }
   ```
+
+Commented this part below, will uncomment these after Completing those steps and update as my experience while implementing those.
 
 [//]: # ()
 [//]: # (### 6. **Create a `UserController` Class**)
