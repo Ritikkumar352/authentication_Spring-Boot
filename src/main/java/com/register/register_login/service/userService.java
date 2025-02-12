@@ -13,7 +13,7 @@ import java.util.Map;
 public class userService {
     @Autowired
     private userRepo repo;
-    
+
     public String validateUser(userModel user) {
         if (user.getuserName().isEmpty() ||
                 user.getEmail().isEmpty() ||
