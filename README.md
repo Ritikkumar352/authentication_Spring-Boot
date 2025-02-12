@@ -69,6 +69,8 @@
 
 ### 5. **Create a `UserService` Class**
 - Create a service class that contains the business logic for user registration. (also for login, later)
+- Add logic to handle input validation
+- Handle register logic here 
 - Example:
   ```java
   @Service
@@ -88,7 +90,7 @@
 ### 6. **Create a `UserController` Class**
 
 - Create a REST controller to expose HTTP endpoints for user registration and login.
-
+- use <Map<String,String> to return JSON, or change receive format in React(Frontend).
 - Example:
 
   ```java
@@ -119,14 +121,15 @@
   ```
 
 
-[//]: # (### 7. **Use `@RequestBody` for Data Input**)
+### 7. **Use `@RequestBody` for Data Input**
 
-[//]: # (- Use the `@RequestBody` annotation to accept user input in JSON format and bind it to the `User` entity.)
+- Use the `@RequestBody` annotation to accept user input in JSON format and bind it to the `User` entity.
 
-[//]: # ()
-[//]: # (### 8. **Save User to Database**)
 
-[//]: # (- In the `UserService` class, use `userRepository.save&#40;user&#41;` to store the user's data in PostgreSQL after registration.)
+### 8. **Save User to Database**
+
+- In the `UserService` class, use `userRepository.save(user)` to store the user's data in PostgreSQL after registration.
+- handle register logic in userService
 
 [//]: # ()
 [//]: # (### 9. **Implement Login API**)
