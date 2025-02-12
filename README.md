@@ -131,6 +131,13 @@
 - In the `UserService` class, use `userRepository.save(user)` to store the user's data in PostgreSQL after registration.
 - handle register logic in userService
 
+
+# Hasing Password
+- hashing password before saving in db, using SHA-256 (although it's not much secure {bruteFore} but just for learning how to hash before storing).
+- use MessageDigest class for hashing (SHA-256)
+- Use bCrypt, it's more secure (Spring Security).
+
+
 [//]: # ()
 [//]: # (### 9. **Implement Login API**)
 
@@ -143,12 +150,3 @@
 [//]: # (    - Return an authentication status &#40;success or failure&#41;.)
 
 [//]: # ()
-[//]: # (### 10. **Test with Postman or API Client**)
-
-[//]: # (- Use Postman or another API client to test your registration and login functionality by sending POST requests to the appropriate endpoints:)
-
-[//]: # (    - `POST /api/users/register` to register a new user.)
-
-[//]: # (    - `POST /api/users/login` to login with an existing user.)
-
-

@@ -32,6 +32,10 @@ public class userService {
             response.put("message", validate);
             return ResponseEntity.badRequest().body(response);
         }
+        
+        //sent current password .getPass and then .setPass (hashed pass)
+        user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
+        
         try {
             repo.save(user);
             response.put("message", "User Registered Successfully");
