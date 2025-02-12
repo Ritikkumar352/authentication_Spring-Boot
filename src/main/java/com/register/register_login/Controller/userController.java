@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.register.register_login.service.userService;
+import java.util.Map;
 
 @RestController
 public class userController {
@@ -21,23 +22,26 @@ public class userController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody userModel user) {
-        String validate = userService.validateUser(user);
-        if (validate != null) {
-            return ResponseEntity.badRequest().body(validate);
-        }
-//        System.out.println("UserName:- "+ user.getuserName())-- to access current fields;
-        try {
-            userService.registerUser(user);
-            return ResponseEntity.ok("{" +
-                    "\"message\":" +
-                    " \"User Registered Successfully\"" +
-                    "}"
-            );
+    public ResponseEntity<Map<String,String>> register(@RequestBody userModel user) {
+//        String validate = userService.validateUser(user);
+//        if (validate != null) {
+//            return ResponseEntity.badRequest().body(validate);
+//        }
+////        System.out.println("UserName:- "+ user.getuserName())
+////        -- to access current fields;
+//        try {
+//            userService.registerUser(user);
+//            return ResponseEntity.ok("{" +
+//                    "\"message\":" +
+//                    " \"User Registered Successfully\"" +
+//                    "}"
+//            );
+//
+//        } catch (Exception e) {
+//            return ResponseEntity.status(500).body("Registration Failed");
+//        }
+        return userService.registerUser(user);
 
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Registration Failed");
-        }
     }
 
     @GetMapping("/about")
