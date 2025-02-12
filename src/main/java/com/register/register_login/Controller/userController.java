@@ -22,6 +22,11 @@ public class userController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody userModel user) {
+        String validate = userService.validateUser(user);
+        if (validate != null) {
+            return ResponseEntity.badRequest().body(validate);
+        }
+//        System.out.println("UserName:- "+ user.getuserName())-- to access current fields;
         try {
             userService.registerUser(user);
             return ResponseEntity.ok("{" +
