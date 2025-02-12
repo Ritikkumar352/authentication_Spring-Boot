@@ -5,6 +5,7 @@ import com.register.register_login.repo.userRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +13,7 @@ import java.util.Map;
 public class userService {
     @Autowired
     private userRepo repo;
-
-    //    public userModel registerUser(userModel user){
-    //        return repo.save(user);
-    //    }
+    
     public String validateUser(userModel user) {
         if (user.getuserName().isEmpty() ||
                 user.getEmail().isEmpty() ||
