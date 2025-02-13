@@ -38,17 +38,17 @@ public class userService {
             return ResponseEntity.badRequest().body(response);
         }
 
-        if(repo.findByEmail(user.getEmail()).isPresent()){
-            response.put("message","Email already Exists");
+        if (repo.findByEmail(user.getEmail()).isPresent()) {
+            response.put("message", "Email already Exists");
             return ResponseEntity.badRequest().body(response);
-        }else if(repo.findByuserName(user.getuserName()).isPresent()){
-            response.put("message","userName already exists");
+        } else if (repo.findByuserName(user.getuserName()).isPresent()) {
+            response.put("message", "userName already exists");
             return ResponseEntity.badRequest().body(response);
         }
 
         //sent current password .getPass and then .setPass (hashed pass)
         user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
-        
+
         try {
             repo.save(user);
             response.put("message", "User Registered Successfully");
@@ -59,22 +59,62 @@ public class userService {
         }
     }
 
+    // ## Login Logic
+
+    public ResponseEntity<Map<String, String>> loginUser(userModel user) {
+        Map<String, String> response = new HashMap<>();
+        // Make sure these two return same user;
+//        Optional<userModel> loginUser = repo.findByuserName(user.getuserName());
+//        Optional<userModel> loginEmail = repo.findByEmail(user.getEmail());
+        Optional<userModel> foundUser = repo.findByuserNameOrEmail(user.getuserName(), user.getEmail());
+
+        // Password Matching logic
+        System.out.println(user.getPassword());
+        String hashedPassCheck = PasswordHasher.hashPassword(user.getPassword());
+
+
+        if (foundUser.isPresent()) {
+            // wrong password check logic fix this..
+            // if user is present check is password correct or not..
+//            if(user.getPassword().equals(hashedPassCheck)){
+//            response.put("message", "Login Successful");
+//            return ResponseEntity.ok(response);
+//            }else {
+//                response.put("message", "Wrong Password");
+//                return ResponseEntity.badRequest().body(response);
+//            }
+
+            response.put("message", "Login Successful");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "User not found");
+            return ResponseEntity.status(404).body(response);
+        }
+    }
+
+
+    // TEST DB SPEED-- ***********************
+
+    //--*******************************
+
+
     // Extracting Data from db
     // For login.
     // check is it required
     public userModel getUserByEmail(String email) {
-        Optional<userModel> user=repo.findByEmail(email);
-        if(user.isPresent()) {
+        Optional<userModel> user = repo.findByEmail(email);
+        if (user.isPresent()) {
             return user.get();
-        }else{
+        } else {
             throw new RuntimeException("User with this 'Email' Not Found");
         }
     }
+
     public userModel getUserByUserName(String userName) {
-        Optional<userModel> user=repo.findByuserName(userName);
-        if(user.isPresent()) {
+        Optional<userModel> user = repo.findByuserName(userName);
+        if (user.isPresent()) {
             return user.get();
-        }else{
+        } else {
             throw new RuntimeException("User with this 'userName' Not Found");
         }
     }

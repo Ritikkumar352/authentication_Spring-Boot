@@ -150,3 +150,11 @@
 [//]: # (    - Return an authentication status &#40;success or failure&#41;.)
 
 [//]: # ()
+
+
+# **** Database Section *****
+- first quesry is significantly slower(181-211ms) while all other after that are much faster(3-12,13ms).
+- It's due to caching , Hibernate(JPA) and some other factors...
+- To improve this I can run a dummy query on apllication start to warm up caches.
+
+- Add an index to email and userName (field used in login) as these are now unique.. for faster look-Up, Increases storage space.
