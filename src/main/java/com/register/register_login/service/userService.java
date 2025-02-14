@@ -69,21 +69,9 @@ public class userService {
         Optional<userModel> foundUser = repo.findByuserNameOrEmail(user.getuserName(), user.getEmail());
 
         // Password Matching logic
-        System.out.println(user.getPassword());
-        String hashedPassCheck = PasswordHasher.hashPassword(user.getPassword());
 
 
         if (foundUser.isPresent()) {
-            // wrong password check logic fix this..
-            // if user is present check is password correct or not..
-//            if(user.getPassword().equals(hashedPassCheck)){
-//            response.put("message", "Login Successful");
-//            return ResponseEntity.ok(response);
-//            }else {
-//                response.put("message", "Wrong Password");
-//                return ResponseEntity.badRequest().body(response);
-//            }
-
             response.put("message", "Login Successful");
             return ResponseEntity.ok(response);
         } else {
