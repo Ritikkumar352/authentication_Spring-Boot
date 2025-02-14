@@ -6,20 +6,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+//  ####################################################  //
+// use 1. //# for main operation
+// use 2. //* for operations in main operation
+// use 3. //- for smaller opration useing prev defind methods
+
 
 @Service
 public class userService {
     @Autowired
     private userRepo repo;
 
+    //* input validation before query
 
-    // Saving Data into db
+    // - login input validation
+    public String validateLoginUser(userModel user) {
+        if (user.getuserName() == null || user.getPassword() == null) {
+            return "1";
+        } else {
+            return "username or password cannot be empty";
+        }
+    }
 
-    public String validateUser(userModel user) {
+    // - Registration input validation
+    public String validateRegUser(userModel user) {
         if (user.getuserName() == null || user.getuserName().isEmpty() ||
                 user.getEmail() == null || user.getEmail().isEmpty() ||
                 user.getPassword() == null || user.getPassword().isEmpty() ||
@@ -30,14 +44,16 @@ public class userService {
         return null;
     }
 
+    //## Saving Data into db
+
+        // * Register Uuser
     public ResponseEntity<Map<String, String>> registerUser(userModel user) {
         Map<String, String> response = new HashMap<>();
-        String validate = validateUser(user);
+        String validate = validateRegUser(user);
         if (validate != null) {
             response.put("message", validate);
             return ResponseEntity.badRequest().body(response);
         }
-
         if (repo.findByEmail(user.getEmail()).isPresent()) {
             response.put("message", "Email already Exists");
             return ResponseEntity.badRequest().body(response);
@@ -45,10 +61,8 @@ public class userService {
             response.put("message", "userName already exists");
             return ResponseEntity.badRequest().body(response);
         }
-
         //sent current password .getPass and then .setPass (hashed pass)
         user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
-
         try {
             repo.save(user);
             response.put("message", "User Registered Successfully");
@@ -59,26 +73,38 @@ public class userService {
         }
     }
 
-    // ## Login Logic
-
+        // * Login user Logic
     public ResponseEntity<Map<String, String>> loginUser(userModel user) {
         Map<String, String> response = new HashMap<>();
-        // Make sure these two return same user;
-//        Optional<userModel> loginUser = repo.findByuserName(user.getuserName());
-//        Optional<userModel> loginEmail = repo.findByEmail(user.getEmail());
-        Optional<userModel> foundUser = repo.findByuserNameOrEmail(user.getuserName(), user.getEmail());
 
-        // Password Matching logic
+        // -validate login input fileds
+        String validate = validateLoginUser(user);
+        System.out.println(validate+"-- login vallll");
 
 
-        if (foundUser.isPresent()) {
-            response.put("message", "Login Successful");
-            return ResponseEntity.ok(response);
-        } else {
-            response.put("message", "User not found");
-            return ResponseEntity.status(404).body(response);
+        userModel foundUser = repo.findByuserNameOrEmail(user.getuserName(), user.getEmail());
+
+        if (foundUser == null) {
+            response.put("message", "User Not Found");
+            return ResponseEntity.badRequest().body(response);
+        } else if (foundUser.getuserName().equals(user.getuserName())) {
+            String hashPassCheck = PasswordHasher.hashPassword(user.getPassword());
+            if (foundUser.getPassword().equals(hashPassCheck)) {
+                response.put("message", "Login Successful");
+            } else {
+                response.put("message", "Wrong Password");
+            }
         }
+        return ResponseEntity.ok(response);
     }
+
+
+    // #Session Management, secure access to other routes
+
+
+
+
+
 
 
     // TEST DB SPEED-- ***********************
