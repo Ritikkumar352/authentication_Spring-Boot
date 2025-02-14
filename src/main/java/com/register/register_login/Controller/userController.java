@@ -30,8 +30,18 @@ public class userController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody userModel user) {
         return userService.loginUser(user);
-
     }
+
+    @GetMapping("/session-check")
+    public ResponseEntity<Map<String, String>> sessionCheck() {
+        return userService.isUserLoggedIn();
+    }
+
+    @GetMapping("/session-data")
+    public Map<String, Object> sessionData() {
+        return userService.getSessionData();
+    }
+
 
 
     @GetMapping("/about")

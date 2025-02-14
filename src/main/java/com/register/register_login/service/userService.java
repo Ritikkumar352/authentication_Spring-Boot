@@ -2,6 +2,7 @@ package com.register.register_login.service;
 
 import com.register.register_login.model.userModel;
 import com.register.register_login.repo.userRepo;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ import java.util.Optional;
 public class userService {
     @Autowired
     private userRepo repo;
+
+    @Autowired
+    private HttpSession session;
 
     //* input validation before query
 
@@ -46,7 +50,7 @@ public class userService {
 
     //## Saving Data into db
 
-        // * Register Uuser
+    // * Register Uuser
     public ResponseEntity<Map<String, String>> registerUser(userModel user) {
         Map<String, String> response = new HashMap<>();
         String validate = validateRegUser(user);
@@ -73,13 +77,13 @@ public class userService {
         }
     }
 
-        // * Login user Logic
+    // * Login user Logic
     public ResponseEntity<Map<String, String>> loginUser(userModel user) {
         Map<String, String> response = new HashMap<>();
 
         // -validate login input fileds
         String validate = validateLoginUser(user);
-        System.out.println(validate+"-- login vallll");
+        System.out.println(validate + "-- login vallll");
 
 
         userModel foundUser = repo.findByuserNameOrEmail(user.getuserName(), user.getEmail());
@@ -90,6 +94,19 @@ public class userService {
         } else if (foundUser.getuserName().equals(user.getuserName())) {
             String hashPassCheck = PasswordHasher.hashPassword(user.getPassword());
             if (foundUser.getPassword().equals(hashPassCheck)) {
+                // logsss
+                System.out.println("Session ID before setting attributes: " + session.getId());
+
+                // * Store user data in session for secure access
+                session.setAttribute("userId", foundUser.getId());
+                session.setAttribute("name", foundUser.getName());
+                session.setAttribute("userName", foundUser.getuserName());
+                session.setAttribute("email", foundUser.getEmail());
+
+                // logs System.out.println("Session ID after setting attributes: " + session.getId());
+                System.out.println("Session User ID: " + session.getAttribute("userId"));
+                System.out.println("Session UserName: " + session.getAttribute("userName"));
+                System.out.println("Session Email: " + session.getAttribute("email"));
                 response.put("message", "Login Successful");
             } else {
                 response.put("message", "Wrong Password");
@@ -101,9 +118,51 @@ public class userService {
 
     // #Session Management, secure access to other routes
 
+    public ResponseEntity<Map<String, String>> isUserLoggedIn() {
+        Map<String, String> response = new HashMap<>();
+        if (session.getAttribute("userId") == null) {
+            response.put("message", "User Not Logged In");
+            return ResponseEntity.badRequest().body(response);
+        }// expanded if-else for better understandin
 
+        response.put("message", "User Logged In");
+        return ResponseEntity.ok(response);
+    }
 
+    public Map<String, Object> getSessionData() {
+        Map<String, Object> sessionData = new HashMap<>();
+        if(session.getAttribute("userId")!=null){
+            sessionData.put("userId", session.getAttribute("userId"));
+            sessionData.put("userName", session.getAttribute("userName"));
+            sessionData.put("name", session.getAttribute("name"));
+            sessionData.put("email", session.getAttribute("email"));
+            return sessionData;
+        }else {
+            sessionData.put("message", "User Not Logged In");
+        }
+        return sessionData;
+    }
 
+    // ** get current loggedIn user details
+    public void logoutUser() {
+        session.invalidate();
+    }
+
+    public int getLoggedInUserId() {
+        return (int) session.getAttribute("userId");
+    }
+
+    public String getLoggedInUserName() {
+        return (String) session.getAttribute("userName");
+    }
+
+    public String getLoggedInName() {
+        return (String) session.getAttribute("name");
+    }
+
+    public String getLoggedInEmail() {
+        return (String) session.getAttribute("email");
+    }
 
 
 
