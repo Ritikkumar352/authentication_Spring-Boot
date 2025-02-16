@@ -1,6 +1,7 @@
 package com.register.register_login.Controller;
 
 import com.register.register_login.model.userModel;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,12 +10,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.register.register_login.service.userService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 public class userController {
     @Autowired
     private userService userService;
+
+    @Autowired
+    HttpSession session;
 
     @GetMapping("/")
 
@@ -42,7 +47,10 @@ public class userController {
         return userService.getSessionData();
     }
 
-
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout() {
+        return userService.logoutUser();
+    }
 
     @GetMapping("/about")
     public String about() {

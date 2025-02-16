@@ -16,7 +16,6 @@ import java.util.Optional;
 // use 2. //* for operations in main operation
 // use 3. //- for smaller opration useing prev defind methods
 
-
 @Service
 public class userService {
     @Autowired
@@ -80,14 +79,11 @@ public class userService {
     // * Login user Logic
     public ResponseEntity<Map<String, String>> loginUser(userModel user) {
         Map<String, String> response = new HashMap<>();
-
         // -validate login input fileds
         String validate = validateLoginUser(user);
         System.out.println(validate + "-- login vallll");
 
-
         userModel foundUser = repo.findByuserNameOrEmail(user.getuserName(), user.getEmail());
-
         if (foundUser == null) {
             response.put("message", "User Not Found");
             return ResponseEntity.badRequest().body(response);
@@ -143,11 +139,15 @@ public class userService {
         return sessionData;
     }
 
-    // ** get current loggedIn user details
-    public void logoutUser() {
+
+    public ResponseEntity<Map<String, String>> logoutUser() {
         session.invalidate();
+        Map<String, String> response = new HashMap<>();
+        response.put("message","Logout successful");
+        return ResponseEntity.ok(response);
     }
 
+    // ** get current loggedIn user details
     public int getLoggedInUserId() {
         return (int) session.getAttribute("userId");
     }
@@ -191,5 +191,4 @@ public class userService {
             throw new RuntimeException("User with this 'userName' Not Found");
         }
     }
-
 }
