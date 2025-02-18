@@ -94,7 +94,9 @@ public class userService {
                 System.out.println("Session ID before setting attributes: " + session.getId());
 
                 // * Store user data in session for secure access
-                session.setAttribute("userId", foundUser.getId());
+                session.setAttribute("userId", (int)foundUser.getId());
+
+                System.out.println("Session ID after setting attributes: " + session.getAttribute("userId"));
                 session.setAttribute("name", foundUser.getName());
                 session.setAttribute("userName", foundUser.getuserName());
                 session.setAttribute("email", foundUser.getEmail());
@@ -117,24 +119,27 @@ public class userService {
     public ResponseEntity<Map<String, String>> isUserLoggedIn() {
         Map<String, String> response = new HashMap<>();
         if (session.getAttribute("userId") == null) {
-            response.put("message", "User Not Logged In");
+            response.put("message", "User Not Logged In-- isUserLoggedIn class {B]");
             return ResponseEntity.badRequest().body(response);
         }// expanded if-else for better understandin
 
-        response.put("message", "User Logged In");
+        response.put("message", "User Logged In-- isUserLoggedIn class {B]");
         return ResponseEntity.ok(response);
     }
 
     public Map<String, Object> getSessionData() {
         Map<String, Object> sessionData = new HashMap<>();
         if(session.getAttribute("userId")!=null){
+            System.out.println("UserId is not null");
             sessionData.put("userId", session.getAttribute("userId"));
             sessionData.put("userName", session.getAttribute("userName"));
             sessionData.put("name", session.getAttribute("name"));
             sessionData.put("email", session.getAttribute("email"));
             return sessionData;
         }else {
-            sessionData.put("message", "User Not Logged In");
+
+            System.out.println("UserId is NULL");
+            sessionData.put("message", "User Not Logged In-- getSessionData method {B]");
         }
         return sessionData;
     }

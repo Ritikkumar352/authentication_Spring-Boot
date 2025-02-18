@@ -22,7 +22,6 @@ public class userController {
     HttpSession session;
 
     @GetMapping("/")
-
     public String home() {
         return "home";
     }
@@ -44,6 +43,8 @@ public class userController {
 
     @GetMapping("/session-data")
     public Map<String, Object> sessionData() {
+        System.out.println("Session data----- username");
+        System.out.println(session.getAttribute("userName"));
         return userService.getSessionData();
     }
 
