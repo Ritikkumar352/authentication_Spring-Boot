@@ -36,17 +36,21 @@ public class userController {
         return userService.loginUser(user);
     }
 
-    @GetMapping("/session-check")
-    public ResponseEntity<Map<String, String>> sessionCheck() {
-        return userService.isUserLoggedIn();
-    }
+//    @GetMapping("/session-check")
+//    public ResponseEntity<Map<String, String>> sessionCheck() {
+//        return userService.isUserLoggedIn();
+//    }
 
     @GetMapping("/session-data")
     public Map<String, Object> sessionData() {
+        // working in POSTMAN but not on react
+        System.out.println("Calling session data....");
         System.out.println("Session data----- username");
         System.out.println(session.getAttribute("userName"));
         return userService.getSessionData();
+
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout() {

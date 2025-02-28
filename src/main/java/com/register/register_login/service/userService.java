@@ -90,22 +90,43 @@ public class userService {
         } else if (foundUser.getuserName().equals(user.getuserName())) {
             String hashPassCheck = PasswordHasher.hashPassword(user.getPassword());
             if (foundUser.getPassword().equals(hashPassCheck)) {
-                // logsss
-                System.out.println("Session ID before setting attributes: " + session.getId());
+//
+//                // Store user data in session for secure access
+//                session.setAttribute("userId", foundUser.getId());
+//                session.setAttribute("name", foundUser.getName());
+//                session.setAttribute("userName", foundUser.getuserName());
+//                session.setAttribute("email", foundUser.getEmail());
+//
+// Fetch again to verify session attributes
+//                Object sessionUserId = session.getAttribute("userId");
+//                Object sessionUserName = session.getAttribute("userName");
+//                Object sessionEmail = session.getAttribute("email");
+//
+//// Log session values
+//                System.out.println("Session ID: " + session.getId());
+//                System.out.println("Session User ID: " + sessionUserId);
+//                System.out.println("Session UserName: " + sessionUserName);
+//                System.out.println("Session Email: " + sessionEmail);
+//
+//                response.put("message", "Login Successful");
+////                return ResponseEntity.ok(response);
 
+
+                // logsss
+//                System.out.println("Session ID before setting attributes: " + session.getId());
                 // * Store user data in session for secure access
                 session.setAttribute("userId", (int)foundUser.getId());
-
-                System.out.println("Session ID after setting attributes: " + session.getAttribute("userId"));
+//                System.out.println("Session ID after setting attributes: " + session.getAttribute("userId"));
                 session.setAttribute("name", foundUser.getName());
                 session.setAttribute("userName", foundUser.getuserName());
                 session.setAttribute("email", foundUser.getEmail());
-
                 // logs System.out.println("Session ID after setting attributes: " + session.getId());
                 System.out.println("Session User ID: " + session.getAttribute("userId"));
                 System.out.println("Session UserName: " + session.getAttribute("userName"));
                 System.out.println("Session Email: " + session.getAttribute("email"));
                 response.put("message", "Login Successful");
+//                 this line was missing .. it was not returning data
+                return ResponseEntity.ok(response);
             } else {
                 response.put("message", "Wrong Password");
             }
@@ -137,7 +158,6 @@ public class userService {
             sessionData.put("email", session.getAttribute("email"));
             return sessionData;
         }else {
-
             System.out.println("UserId is NULL");
             sessionData.put("message", "User Not Logged In-- getSessionData method {B]");
         }

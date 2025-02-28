@@ -133,7 +133,7 @@
 
 
 # Hasing Password
-- hashing password before saving in db, using SHA-256 (although it's not much secure {bruteFore} but just for learning how to hash before storing).
+- hashing password before saving in db, using SHA-256 (although it's not much secure {bruteFore} but just for learning how to hash before storing in spring Boot).
 - use MessageDigest class for hashing (SHA-256)
 - Use bCrypt, it's more secure (Spring Security).
 
@@ -158,3 +158,48 @@
 - To improve this I can run a dummy query on apllication start to warm up caches.
 
 - Add an index to email and userName (field used in login) as these are now unique.. for faster look-Up, Increases storage space.
+
+
+# Login
+
+
+
+
+
+
+
+# Session Management
+
+- Intilize HttpSession object 
+- Now set required data using ``` .setAttribute("userId",(int)foundUser.getId());``` and all other required like ```.setAttribute("name",foundUser.getUserName()) ```
+  
+- Code 1 (Working)
+```
+session.setAttribute("userId", foundUser.getId());
+
+Object sessionUserId = session.getAttribute("userId");
+
+System.out.println("Session ID: " + session.getId());
+
+response.put("message", "Login Successful");
+return ResponseEntity.ok(response);
+```
+- Code 2 (Not working)
+
+```
+session.setAttribute("userId", foundUser.getId());
+
+System.out.println("Session ID: " + session.getId());
+
+response.put("message", "Login Successful");
+return ResponseEntity.ok(response);
+```
+
+
+
+
+
+# TODO
+
+- Change hash password check validation, using ``verify``
+- Write Login Implementation details
