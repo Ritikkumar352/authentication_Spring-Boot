@@ -40,6 +40,10 @@ public class userController {
 //    public ResponseEntity<Map<String, String>> sessionCheck() {
 //        return userService.isUserLoggedIn();
 //    }
+    @PostMapping
+    public ResponseEntity<Map<String,String>> update(@RequestBody userModel user) {
+        return userService.update(user);
+    }
 
     @GetMapping("/session-data")
     public Map<String, Object> sessionData() {
@@ -51,7 +55,7 @@ public class userController {
 
     }
 
-
+    // Logout is working in PostMan ... fix React code
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout() {
         return userService.logoutUser();
