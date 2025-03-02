@@ -197,7 +197,6 @@ public class userService {
 
 
     //## Delete from DB
-
     public ResponseEntity<Map<String, String>> deleteUser(Integer userId) {
         Map<String, String> response = new HashMap<>();
         Optional<userModel> user=repo.findUserById(userId);
