@@ -195,7 +195,78 @@ response.put("message", "Login Successful");
 return ResponseEntity.ok(response);
 ```
 
+# All Rest API Endpoints
 
+
+# User Controller API Documentation
+
+This document provides a brief overview of the REST API endpoints available in the `userController` class.
+
+
+## Endpoints
+
+### 1. Home
+- **URL:** `/`
+- **Method:** `GET`
+- **Description:** Returns a simple "home" string.
+- **Response:** `String`
+
+### 2. Register User
+- **URL:** `/register`
+- **Method:** `POST`
+- **Description:** Registers a new user.
+- **Request Body:** `userModel` object containing user details.
+- **Response:** `ResponseEntity<Map<String, String>>`
+
+### 3. Login User
+- **URL:** `/login`
+- **Method:** `POST`
+- **Description:** Authenticates a user and logs them in.
+- **Request Body:** `userModel` object containing login credentials.
+- **Response:** `ResponseEntity<Map<String, String>>`
+
+### 4. Update User Profile
+- **URL:** `/updateProfile`
+- **Method:** `PATCH`
+- **Description:** Updates the profile of the logged-in user.
+- **Request Body:** `userDTO` object containing updated user details.
+- **Response:** `ResponseEntity<Map<String, String>>`
+
+### 5. Get Session Data
+- **URL:** `/session-data`
+- **Method:** `GET`
+- **Description:** Retrieves session data for the logged-in user.
+- **Response:** `Map<String, Object>`
+
+### 6. Logout User
+- **URL:** `/logout`
+- **Method:** `POST`
+- **Description:** Logs out the currently logged-in user.
+- **Response:** `ResponseEntity<Map<String, String>>`
+
+### 7. About
+- **URL:** `/about`
+- **Method:** `GET`
+- **Description:** Returns a simple "about" string.
+- **Response:** `String`
+
+### 8. Contact
+- **URL:** `/contact`
+- **Method:** `GET`
+- **Description:** Returns a simple "contact" string.
+- **Response:** `String`
+
+### 9. Delete User
+- **URL:** `/deleteUser`
+- **Method:** `DELETE`
+- **Description:** Deletes a user by their ID.
+- **Request Body:** `int` representing the user ID.
+- **Response:** `ResponseEntity<Map<String, String>>`
+
+## Notes
+- The `userService` class handles the business logic for each endpoint.
+- Session management is used to track logged-in users.
+- Some endpoints (e.g., `/session-data`, `/logout`) may require adjustments for compatibility with frontend frameworks like React.
 
 
 
