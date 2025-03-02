@@ -13,7 +13,7 @@ public class userModel {
     private String password;
     private String email;
     private String name;
-    @Column(name = "lastName")
+    @Column(name = "lastName")  // why not worked ?
     private String lastName;
 
     public int getId() {

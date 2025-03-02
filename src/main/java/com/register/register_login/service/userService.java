@@ -1,5 +1,6 @@
 package com.register.register_login.service;
 
+import com.register.register_login.dto.userDTO;
 import com.register.register_login.model.userModel;
 import com.register.register_login.repo.userRepo;
 import jakarta.servlet.http.HttpSession;
@@ -164,7 +165,27 @@ public class userService {
         return sessionData;
     }
 
+    //## UPDATE DATA in DB
 
+    //** Profile Update method
+    public ResponseEntity<Map<String, String>> update(userDTO updatedUser) {
+        Map<String, String> response = new HashMap<>();
+        Optional<userModel> updateUser = repo.findUserById(updatedUser.getId());
+        if (updateUser.isPresent()) {
+            userModel foundUser = updateUser.get();
+            foundUser.setName(updatedUser.getName());
+            foundUser.setLastName(updatedUser.getLastName());
+            System.out.println("Updating User: " + foundUser);
+
+            repo.save(foundUser);
+            repo.flush(); //force --
+            response.put("message", "user Details updated");
+            return ResponseEntity.ok(response);
+        }
+
+        response.put("message", "User Not Found");
+        return ResponseEntity.badRequest().body(response);
+    }
 
 
     public ResponseEntity<Map<String, String>> logoutUser() {
@@ -172,6 +193,22 @@ public class userService {
         Map<String, String> response = new HashMap<>();
         response.put("message", "Logout successful");
         return ResponseEntity.ok(response);
+    }
+
+
+    //## Delete from DB
+
+    public ResponseEntity<Map<String, String>> deleteUser(Integer userId) {
+        Map<String, String> response = new HashMap<>();
+        Optional<userModel> user=repo.findUserById(userId);
+        if (user.isPresent()) {
+            repo.delete(user.get());
+
+            response.put("message", "User Deleted Successfully");
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "User Not Found");
+        return ResponseEntity.badRequest().body(response);
     }
 
     // ** get current loggedIn user details

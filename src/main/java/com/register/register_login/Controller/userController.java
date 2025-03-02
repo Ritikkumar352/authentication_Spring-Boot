@@ -1,13 +1,11 @@
 package com.register.register_login.Controller;
 
+import com.register.register_login.dto.userDTO;
 import com.register.register_login.model.userModel;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.register.register_login.service.userService;
 
 import java.util.HashMap;
@@ -40,8 +38,9 @@ public class userController {
 //    public ResponseEntity<Map<String, String>> sessionCheck() {
 //        return userService.isUserLoggedIn();
 //    }
-    @PostMapping
-    public ResponseEntity<Map<String,String>> update(@RequestBody userModel user) {
+
+    @PatchMapping("/updateProfile")
+    public ResponseEntity<Map<String,String>> update(@RequestBody userDTO user) {
         return userService.update(user);
     }
 
@@ -70,4 +69,10 @@ public class userController {
     public String contact() {
         return "contact";
     }
+
+    @DeleteMapping("deleteUser")
+    public ResponseEntity<Map<String, String>> deleteUser(@RequestBody int id) {
+        return userService.deleteUser(id);
+    }
+
 }
